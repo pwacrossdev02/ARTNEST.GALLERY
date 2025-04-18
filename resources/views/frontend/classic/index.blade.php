@@ -10,7 +10,7 @@
     </style>
     @php $lang = get_system_language()->code;  @endphp
     <!-- Sliders -->
-    <div class="home-banner-area mb-3" style="">
+    <div class="home-banner-area mb-3">
         <div class="container">
             <div class="d-flex flex-wrap position-relative">
                 <div class="position-static d-none d-xl-block">
@@ -29,7 +29,7 @@
                             @foreach ($sliders as $key => $slider)
                                 <div class="carousel-box">
                                     <a href="{{ isset(json_decode($home_slider_links, true)[$key]) ? json_decode($home_slider_links, true)[$key] : '' }}">
-                                        <!-- Image -->
+                                        
                                         <img class="d-block mw-100 img-fit overflow-hidden h-180px h-md-320px h-lg-460px overflow-hidden"
                                             src="{{ $slider ? my_asset($slider->file_name) : static_asset('assets/img/placeholder.jpg') }}"
                                             alt="{{ env('APP_NAME') }} promo"
@@ -157,7 +157,7 @@
                     <div class="d-flex mb-2 mb-md-3 align-items-baseline justify-content-between">
                         <!-- Title -->
                         <h3 class="fs-16 fs-md-20 fw-700 mb-2 mb-sm-0">
-                            <span class="">{{ translate('Featured Categories') }}</span>
+                            <span>{{ translate('Featured Categories') }}</span>
                         </h3>
                         <!-- Links -->
                         <div class="d-flex">

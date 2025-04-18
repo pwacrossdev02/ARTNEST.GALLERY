@@ -82,23 +82,23 @@
                     </ul>
                 </div>
 
-                <div class="col-6 text-right d-none d-lg-block">
-                    <ul class="list-inline mb-0 h-100 d-flex justify-content-end align-items-center">
-                        @if (get_setting('vendor_system_activation') == 1)
+                <!-- <div class="col-6 text-right d-none d-lg-block">
+                    <ul class="list-inline mb-0 h-100 d-flex justify-content-end align-items-center"> -->
+                        <!-- @if (get_setting('vendor_system_activation') == 1) -->
                             <!-- Become a Seller -->
-                            <li class="list-inline-item mr-0 pl-0 py-2">
+                            <!-- <li class="list-inline-item mr-0 pl-0 py-2">
                                 <a href="{{ route('shops.create') }}"
                                     class="text-secondary fs-12 pr-3 d-inline-block border-width-2 border-right">{{ translate('Become a Seller !') }}</a>
-                            </li>
+                            </li> -->
                             <!-- Seller Login -->
-                            <li class="list-inline-item mr-0 pl-0 py-2">
+                            <!-- <li class="list-inline-item mr-0 pl-0 py-2">
                                 <a href="{{ route('seller.login') }}"
                                     class="text-secondary fs-12 pl-3 d-inline-block">{{ translate('Login to Seller') }}</a>
                             </li>
-                        @endif
-                        @if (get_setting('helpline_number'))
+                        @endif -->
+                        <!-- @if (get_setting('helpline_number')) -->
                             <!-- Helpline -->
-                            <li class="list-inline-item ml-3 pl-3 mr-0 pr-0">
+                            <!-- <li class="list-inline-item ml-3 pl-3 mr-0 pr-0">
                                 <a href="tel:{{ get_setting('helpline_number') }}"
                                     class="text-secondary fs-12 d-inline-block py-2">
                                     <span>{{ translate('Helpline') }}</span>
@@ -107,7 +107,7 @@
                             </li>
                         @endif
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -319,7 +319,48 @@
                             </li>
                         </ul>
                     @endif
+                    
+                    <!-- @if (Auth::check() && auth()->user()->user_type == 'seller')
+                        
+                        @if(!request()->has('as_customer'))
+                            <div class="text-center my-4">
+                                <a href="{{ route('dashboard', ['as_customer' => true]) }}" class="btn btn-outline-dark btn-lg px-5 py-3">
+                                    Switch to Customer Dashboard
+                                </a>
+                            </div>
+                        @else
+                            <div class="text-center my-4">
+                                <a href="{{ route('seller.dashboard') }}" class="btn btn-outline-primary btn-lg px-5 py-3">
+                                    Back to Seller Dashboard
+                                </a>
+                            </div>
+                        @endif
+                    @endif -->
+                    <!-- @if (Auth::check() && auth()->user()->user_type == 'seller')
+                        @if(session('acting_as_customer'))
+                            <a href="{{ route('seller.dashboard') }}" class="btn btn-outline-primary">
+                                Back to Seller Dashboard
+                            </a>
+                        @else
+                            <a href="{{ route('dashboard', ['as_customer' => 1]) }}" class="btn btn-outline-dark">
+                                Switch to Customer Dashboard
+                            </a>
+                        @endif
+                    @endif -->
+                    @if (Auth::check() && auth()->user()->user_type == 'seller')
+                        @if(session('acting_role') == 'customer')
+                            <a href="{{ route('switch.role', 'seller') }}" class="btn btn-outline-primary btn-sm">
+                                Switch to Seller Role
+                            </a>
+                        @else
+                            <a href="{{ route('switch.role', 'customer') }}" class="btn btn-outline-dark btn-sm">
+                                Switch to Customer Role
+                            </a>
+                        @endif
+                    @endif
 
+
+                    
                     <div class="d-none d-xl-block ml-auto mr-0">
                         @auth
                             <span
@@ -355,7 +396,8 @@
                                 </span>
                                 <a href="{{ route('user.login') }}"
                                     class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block border-right border-soft-light border-width-2 pr-2 ml-3">{{ translate('Login') }}</a>
-                                <a href="{{ route('user.registration') }}"
+                                    <!-- <a href="{{ route('user.registration') }}" -->
+                                <a href="{{ route('register.choose') }}"
                                     class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate('Registration') }}</a>
                             </span>
                         @endauth

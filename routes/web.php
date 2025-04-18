@@ -117,6 +117,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit')->middleware('handle-demo-login');
 
     Route::post('/import-data', 'import_data');
+    Route::get('/register/choose', 'choose_role')->name('register.choose')->middleware('handle-demo-login');
+    Route::get('/switch-role/{role}', 'switchRole')->name('switch.role')->middleware('handle-demo-login');
 
     //Home Page
     Route::get('/', 'index')->name('home');

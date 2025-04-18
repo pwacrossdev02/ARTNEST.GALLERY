@@ -108,7 +108,15 @@ class HomeController extends Controller
         }
         return view('auth.' . get_setting('authentication_layout_select') . '.user_login');
     }
+    public function choose_role()
+    {
+        // \Log::debug('Authentication layout is: ' . get_setting('authentication_layout_select'));
 
+        // return view('auth.' . get_setting('authentication_layout_select') . '.user_registration');
+        return view('auth.boxed.choose_role', ['title' => 'test']);
+        // return view('auth.' . get_setting('authentication_layout_select') . '.user_login');
+
+    }
     public function registration(Request $request)
     {
         if (Auth::check()) {
@@ -173,22 +181,124 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function dashboard()
-    {
-        if (Auth::user()->user_type == 'seller') {
-            return redirect()->route('seller.dashboard');
-        } elseif (Auth::user()->user_type == 'customer') {
-            $users_cart = Cart::where('user_id', auth()->user()->id)->first();
-            if ($users_cart) {
-                flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
-            }
-            return view('frontend.user.customer.dashboard');
-        } elseif (Auth::user()->user_type == 'delivery_boy') {
-            return view('delivery_boys.dashboard');
-        } else {
-            abort(404);
+    // public function dashboard()
+    // {
+    //     if (Auth::user()->user_type == 'seller') {
+    //         return redirect()->route('seller.dashboard');
+    //     } elseif (Auth::user()->user_type == 'customer') {
+    //         $users_cart = Cart::where('user_id', auth()->user()->id)->first();
+    //         if ($users_cart) {
+    //             flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
+    //         }
+    //         return view('frontend.user.customer.dashboard');
+    //     } elseif (Auth::user()->user_type == 'delivery_boy') {
+    //         return view('delivery_boys.dashboard');
+    //     } else {
+    //         abort(404);
+    //     }
+    // }
+//     public function dashboard()
+//     {
+//     $user = Auth::user();
+
+//     if ($user->user_type === 'seller') {
+//         // If seller chooses to act as customer
+//         if (request()->has('as_customer')) {
+//             $users_cart = Cart::where('user_id', $user->id)->first();
+//             if ($users_cart) {
+//                 flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
+//             }
+//             return view('frontend.user.customer.dashboard');
+//         }
+
+//         // Default seller dashboard
+//         return redirect()->route('seller.dashboard');
+//     }
+
+//     if ($user->user_type === 'customer') {
+//         // Customer only has access to customer dashboard
+//         $users_cart = Cart::where('user_id', $user->id)->first();
+//         if ($users_cart) {
+//             flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
+//         }
+//         return view('frontend.user.customer.dashboard');
+//     }
+
+//     if ($user->user_type === 'delivery_boy') {
+//         return view('delivery_boys.dashboard');
+//     }
+
+//     abort(404);
+// }
+// public function dashboard()
+// {
+//     $user = Auth::user();
+
+//     // Allow seller to act as customer
+//     if ($user->user_type == 'seller' && request()->has('as_customer')) {
+//         session(['acting_as_customer' => true]);
+//         return view('frontend.user.customer.dashboard');
+//     }
+
+//     if ($user->user_type == 'seller' && session('acting_as_customer')) {
+//         return view('frontend.user.customer.dashboard');
+//     }
+
+//     if ($user->user_type == 'seller') {
+//         session()->forget('acting_as_customer');
+//         return redirect()->route('seller.dashboard');
+//     }
+
+//     if ($user->user_type == 'customer') {
+//         return view('frontend.user.customer.dashboard');
+//     }
+
+//     if ($user->user_type == 'delivery_boy') {
+//         return view('delivery_boys.dashboard');
+//     }
+
+//     abort(404);
+// }
+public function dashboard()
+{
+    $user = Auth::user();
+    $role = session('acting_role', $user->user_type); // fallback to default
+
+    if ($role === 'seller') {
+        return redirect()->route('seller.dashboard');
+    } elseif ($role === 'customer') {
+        $users_cart = Cart::where('user_id', $user->id)->first();
+        if ($users_cart) {
+            flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
         }
+        return view('frontend.user.customer.dashboard');
+    } elseif ($user->user_type === 'delivery_boy') {
+        return view('delivery_boys.dashboard');
     }
+
+    abort(404);
+}
+
+public function switchRole($role)
+{
+    $validRoles = ['seller', 'customer'];
+
+    if (!in_array($role, $validRoles)) {
+        abort(403); // invalid role
+    }
+
+    // Prevent customer-only users from switching to seller
+    if ($role === 'seller' && auth()->user()->user_type !== 'seller') {
+        abort(403); // not allowed
+    }
+
+    session(['acting_role' => $role]);
+
+    flash(translate('Role switched to ') . ucfirst($role))->success();
+    return back();
+}
+
+
 
     public function profile(Request $request)
     {
