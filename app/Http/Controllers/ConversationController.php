@@ -70,7 +70,7 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
-        $user_type = Product::findOrFail($request->product_id)->user->user_type;
+        $action_type = Product::findOrFail($request->product_id)->user->action_type;
 
         $conversation = new Conversation;
         $conversation->sender_id = Auth::user()->id;
@@ -84,7 +84,7 @@ class ConversationController extends Controller
             $message->message = $request->message;
 
             if ($message->save()) {
-                $this->send_message_to_seller($conversation, $message, $user_type);
+                $this->send_message_to_seller($conversation, $message, $action_type);
             }
         }
 
@@ -92,7 +92,7 @@ class ConversationController extends Controller
         return back();
     }
 
-    public function send_message_to_seller($conversation, $message, $user_type)
+    public function send_message_to_seller($conversation, $message, $action_type)
     {
         $array['view'] = 'emails.conversation';
         $array['subject'] = translate('Sender').':- '. Auth::user()->name;
@@ -100,7 +100,7 @@ class ConversationController extends Controller
         $array['content'] = translate('Hi! You recieved a message from ') . Auth::user()->name . '.';
         $array['sender'] = Auth::user()->name;
 
-        if ($user_type == 'admin') {
+        if ($action_type == 'admin') {
             $array['link'] = route('conversations.admin_show', encrypt($conversation->id));
         } else {
             $array['link'] = route('conversations.show', encrypt($conversation->id));

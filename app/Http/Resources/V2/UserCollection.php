@@ -13,7 +13,7 @@ class UserCollection extends ResourceCollection
                 return [
                     'id' => (integer) $data->id,
                     'name' => $data->name,
-                    'type' => $data->user_type,
+                    'type' => $data->action_type,
                     'email' => $data->email,
                     'avatar' => $data->avatar,
                     'avatar_original' => uploaded_asset($data->avatar_original),

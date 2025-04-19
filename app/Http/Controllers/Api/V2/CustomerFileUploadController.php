@@ -14,7 +14,7 @@ class CustomerFileUploadController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->user_type == 'customer') {
+        if (auth()->user()->action_type == 'customer') {
             $all_uploads = Upload::where('user_id', auth()->user()->id);
 
             if ($request->search != null) {
@@ -92,7 +92,7 @@ class CustomerFileUploadController extends Controller
             "xls" => "document",
             "xlsx" => "document"
         );
-        if (auth()->user()->user_type == 'customer') {
+        if (auth()->user()->action_type == 'customer') {
             if ($request->hasFile('aiz_file')) {
                 $upload = new Upload;
                 $extension = strtolower($request->file('aiz_file')->getClientOriginalExtension());
@@ -180,7 +180,7 @@ class CustomerFileUploadController extends Controller
     {
         $upload = Upload::findOrFail($id);
 
-        if (auth()->user()->user_type == 'customer' && $upload->user_id != auth()->user()->id) {
+        if (auth()->user()->action_type == 'customer' && $upload->user_id != auth()->user()->id) {
             return $this->failed(translate("You don't have permission for deleting this!"));
         }
         try {
@@ -273,7 +273,7 @@ class CustomerFileUploadController extends Controller
     {
         $file = Upload::findOrFail($request['id']);
 
-        return (auth()->user()->user_type == 'seller')
+        return (auth()->user()->action_type == 'seller')
             ? view('seller.uploads.info', compact('file'))
             : view('backend.uploaded_files.info', compact('file'));
     }

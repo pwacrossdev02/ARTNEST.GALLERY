@@ -53,7 +53,7 @@ class StaffController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone = $request->mobile;
-            $user->user_type = "staff";
+            $user->action_type = "staff";
             $user->password = Hash::make($request->password);
             if($user->save()){
                 $staff = new Staff;

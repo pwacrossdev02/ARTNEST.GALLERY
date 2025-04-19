@@ -54,7 +54,7 @@ class CheckForMaintenanceMode
                     'message' => translate('We are Under Maintenance')
                 ]);
             }
-            if ((Auth::check() && Auth::user()->user_type == 'admin') || (Auth::check() && Auth::user()->user_type == 'staff') || $this->inExceptArray($request)) {
+            if ((Auth::check() && Auth::user()->action_type == 'admin') || (Auth::check() && Auth::user()->action_type == 'staff') || $this->inExceptArray($request)) {
                 return $next($request);
             } else {
                 return abort(503);

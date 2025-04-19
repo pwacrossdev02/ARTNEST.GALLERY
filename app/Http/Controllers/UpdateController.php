@@ -159,8 +159,8 @@ class UpdateController extends Controller
                     DB::table('notifications')->where('id', $notification->id)->delete();
                     continue;
                 }
-                $user_type = $user->user_type;
-                $type = 'order_'.$status.'_'.$user_type;
+                $action_type = $user->action_type;
+                $type = 'order_'.$status.'_'.$action_type;
                 $notificationTypeId = get_notification_type($type, 'type')->id;
             }
             elseif($notification->type == 'App\Notifications\ShopProductNotification'){
@@ -213,7 +213,7 @@ class UpdateController extends Controller
 
     public function setAdmnRole()
     {
-        $admin_user = User::where('user_type', 'admin')->first();
+        $admin_user = User::where('action_type', 'admin')->first();
         $roles = $admin_user->getRoleNames();
         if ($roles->empty()) {
             $admin_user->assignRole(['Super Admin']);

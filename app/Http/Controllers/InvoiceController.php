@@ -102,7 +102,7 @@ class InvoiceController extends Controller
         $config = [];
 
         $order = Order::findOrFail($id);
-        if (in_array(auth()->user()->user_type, ['admin','staff']) || in_array(auth()->id(), [$order->user_id, $order->seller_id])) {
+        if (in_array(auth()->user()->action_type, ['admin','staff']) || in_array(auth()->id(), [$order->user_id, $order->seller_id])) {
             return PDF::loadView('backend.invoices.invoice', [
                 'order' => $order,
                 'font_family' => $font_family,

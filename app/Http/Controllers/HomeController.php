@@ -145,9 +145,9 @@ class HomeController extends Controller
     {
         $user = null;
         if ($request->get('phone') != null) {
-            $user = User::whereIn('user_type', ['customer', 'seller'])->where('phone', "+{$request['country_code']}{$request['phone']}")->first();
+            $user = User::whereIn('action_type', ['customer', 'seller'])->where('phone', "+{$request['country_code']}{$request['phone']}")->first();
         } elseif ($request->get('email') != null) {
-            $user = User::whereIn('user_type', ['customer', 'seller'])->where('email', $request->email)->first();
+            $user = User::whereIn('action_type', ['customer', 'seller'])->where('email', $request->email)->first();
         }
 
         if ($user != null) {
@@ -183,15 +183,15 @@ class HomeController extends Controller
      */
     // public function dashboard()
     // {
-    //     if (Auth::user()->user_type == 'seller') {
+    //     if (Auth::user()->action_type == 'seller') {
     //         return redirect()->route('seller.dashboard');
-    //     } elseif (Auth::user()->user_type == 'customer') {
+    //     } elseif (Auth::user()->action_type == 'customer') {
     //         $users_cart = Cart::where('user_id', auth()->user()->id)->first();
     //         if ($users_cart) {
     //             flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
     //         }
     //         return view('frontend.user.customer.dashboard');
-    //     } elseif (Auth::user()->user_type == 'delivery_boy') {
+    //     } elseif (Auth::user()->action_type == 'delivery_boy') {
     //         return view('delivery_boys.dashboard');
     //     } else {
     //         abort(404);
@@ -201,7 +201,7 @@ class HomeController extends Controller
 //     {
 //     $user = Auth::user();
 
-//     if ($user->user_type === 'seller') {
+//     if ($user->action_type === 'seller') {
 //         // If seller chooses to act as customer
 //         if (request()->has('as_customer')) {
 //             $users_cart = Cart::where('user_id', $user->id)->first();
@@ -215,7 +215,7 @@ class HomeController extends Controller
 //         return redirect()->route('seller.dashboard');
 //     }
 
-//     if ($user->user_type === 'customer') {
+//     if ($user->action_type === 'customer') {
 //         // Customer only has access to customer dashboard
 //         $users_cart = Cart::where('user_id', $user->id)->first();
 //         if ($users_cart) {
@@ -224,7 +224,7 @@ class HomeController extends Controller
 //         return view('frontend.user.customer.dashboard');
 //     }
 
-//     if ($user->user_type === 'delivery_boy') {
+//     if ($user->action_type === 'delivery_boy') {
 //         return view('delivery_boys.dashboard');
 //     }
 
@@ -235,25 +235,25 @@ class HomeController extends Controller
 //     $user = Auth::user();
 
 //     // Allow seller to act as customer
-//     if ($user->user_type == 'seller' && request()->has('as_customer')) {
+//     if ($user->action_type == 'seller' && request()->has('as_customer')) {
 //         session(['acting_as_customer' => true]);
 //         return view('frontend.user.customer.dashboard');
 //     }
 
-//     if ($user->user_type == 'seller' && session('acting_as_customer')) {
+//     if ($user->action_type == 'seller' && session('acting_as_customer')) {
 //         return view('frontend.user.customer.dashboard');
 //     }
 
-//     if ($user->user_type == 'seller') {
+//     if ($user->action_type == 'seller') {
 //         session()->forget('acting_as_customer');
 //         return redirect()->route('seller.dashboard');
 //     }
 
-//     if ($user->user_type == 'customer') {
+//     if ($user->action_type == 'customer') {
 //         return view('frontend.user.customer.dashboard');
 //     }
 
-//     if ($user->user_type == 'delivery_boy') {
+//     if ($user->action_type == 'delivery_boy') {
 //         return view('delivery_boys.dashboard');
 //     }
 
@@ -262,7 +262,7 @@ class HomeController extends Controller
 public function dashboard()
 {
     $user = Auth::user();
-    $role = session('acting_role', $user->user_type); // fallback to default
+    $role = session('acting_role', $user->action_type); // fallback to default
 
     if ($role === 'seller') {
         return redirect()->route('seller.dashboard');
@@ -272,7 +272,7 @@ public function dashboard()
             flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
         }
         return view('frontend.user.customer.dashboard');
-    } elseif ($user->user_type === 'delivery_boy') {
+    } elseif ($user->action_type === 'delivery_boy') {
         return view('delivery_boys.dashboard');
     }
 
@@ -282,17 +282,19 @@ public function dashboard()
 public function switchRole($role)
 {
     $validRoles = ['seller', 'customer'];
+    $user = auth()->user();
 
     if (!in_array($role, $validRoles)) {
         abort(403); // invalid role
     }
 
     // Prevent customer-only users from switching to seller
-    if ($role === 'seller' && auth()->user()->user_type !== 'seller') {
+    if ($role === 'seller' && $user->user_type !== 'seller') {
         abort(403); // not allowed
     }
 
-    session(['acting_role' => $role]);
+    $user->action_type = $role;
+    $user->save();
 
     flash(translate('Role switched to ') . ucfirst($role))->success();
     return back();
@@ -302,9 +304,9 @@ public function switchRole($role)
 
     public function profile(Request $request)
     {
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->action_type == 'seller') {
             return redirect()->route('seller.profile.index');
-        } elseif (Auth::user()->user_type == 'delivery_boy') {
+        } elseif (Auth::user()->action_type == 'delivery_boy') {
             return view('delivery_boys.profile');
         } else {
             return view('frontend.user.profile');
@@ -420,7 +422,7 @@ public function switchRole($role)
                 $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             }
 
-            if(get_setting('last_viewed_product_activation') == 1 && Auth::check() && auth()->user()->user_type == 'customer'){
+            if(get_setting('last_viewed_product_activation') == 1 && Auth::check() && auth()->user()->action_type == 'customer'){
                 lastViewedProducts($detailedProduct->id, auth()->user()->id);
             }
 
@@ -775,7 +777,7 @@ public function switchRole($role)
                 auth()->login($user, true);
 
                 flash(translate('Email Changed successfully'))->success();
-                if ($user->user_type == 'seller') {
+                if ($user->action_type == 'seller') {
                     return redirect()->route('seller.dashboard');
                 }
                 return redirect()->route('dashboard');
@@ -798,7 +800,7 @@ public function switchRole($role)
 
                 flash(translate('Password updated successfully'))->success();
 
-                if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
+                if (auth()->user()->action_type == 'admin' || auth()->user()->action_type == 'staff') {
                     return redirect()->route('admin.dashboard');
                 }
                 return redirect()->route('home');

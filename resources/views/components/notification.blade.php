@@ -25,7 +25,7 @@
         <div class="media text-inherit">
             <div class="media-body">
                 @php
-                    $user_type = auth()->user()->user_type;
+                    $action_type = auth()->user()->action_type;
                     $notificationType = get_notification_type($notification->notification_type_id, 'id');
                     $notifyContent = $notificationType->getTranslation('default_text');
                 @endphp
@@ -50,7 +50,7 @@
                         @if ($notification->type == 'App\Notifications\OrderNotification')
                         @php
                             $orderCode  = $notification->data['order_code'];
-                            $route = $user_type == 'admin' ?
+                            $route = $action_type == 'admin' ?
                                     route('all_orders.show', encrypt($orderCode)) :
                                     route('seller.orders.show', encrypt($orderCode));
                             $orderCode = "<a href='".$route."'>".$orderCode."</a>";
@@ -73,7 +73,7 @@
                                 $product_id     = $notification->data['id'];
                                 $product_type   = $notification->data['type'];
                                 $lang           = env('DEFAULT_LANGUAGE');
-                                $route = $user_type == 'admin'
+                                $route = $action_type == 'admin'
                                     ? ( $product_type == 'physical'
                                         ? route('products.seller.edit', ['id'=>$product_id, 'lang'=>$lang])
                                         : route('digitalproducts.edit', ['id'=>$product_id, 'lang'=>$lang] ))
@@ -89,7 +89,7 @@
                         @elseif ($notification->type == 'App\Notifications\PayoutNotification')
                             @php
                                 $amount = single_price($notification->data['payment_amount']);
-                                $route = $user_type == 'admin'
+                                $route = $action_type == 'admin'
                                     ? ( $notification->data['status'] == 'pending' ? route('withdraw_requests_all') : route('sellers.payment_histories'))
                                     : ( $notification->data['status'] == 'pending' ? route('seller.money_withdraw_requests.index') : route('seller.payments.index'));
                                 $shopName = "<a href='".$route."'>".$notification->data['name']."</a>";

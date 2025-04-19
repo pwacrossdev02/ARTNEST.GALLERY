@@ -28,7 +28,7 @@ class CustomerController extends Controller
     {
         $sort_search = null;
         $verification_status =  $request->verification_status ?? null;
-        $users = User::where('user_type', 'customer')->orderBy('created_at', 'desc');
+        $users = User::where('action_type', 'customer')->orderBy('created_at', 'desc');
         if($verification_status != null){
             $users = $verification_status == 'verified' ? $users->where('email_verified_at', '!=', null) : $users->where('email_verified_at', null);
         }
@@ -96,7 +96,7 @@ class CustomerController extends Controller
             ]);
 
             // Account Opening Email
-            $array['user_type'] = 'customer';
+            $array['action_type'] = 'customer';
             $array['password'] = $password;
             $array['subject'] = translate('Account Opening Email');
             $array['from'] = env('MAIL_FROM_ADDRESS');

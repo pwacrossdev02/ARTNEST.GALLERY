@@ -1,5 +1,5 @@
 @php
-    $couponUserType = $coupon->user->user_type;
+    $couponUserType = $coupon->user->action_type;
 @endphp
 
 @if ($couponUserType == 'admin' && $coupon->type != 'welcome_base')
@@ -25,7 +25,7 @@
     @endphp
 @endif
 @php
-    if($coupon->user->user_type != 'admin') {
+    if($coupon->user->action_type != 'admin') {
         $shop = $coupon->user->shop;
         $name = $shop->name;
     }
@@ -41,7 +41,7 @@
         <h3 class="fs-13 text-white fw-500 px-3">{{ $name }}
             @if (\Request::route()->getName() == 'coupons.all')
                 <a
-                    @if($coupon->user->user_type != 'admin')
+                    @if($coupon->user->action_type != 'admin')
                         href="{{ route('shop.visit', $shop->slug) }}"
                     @else
                         href="{{ route('inhouse.all') }}"

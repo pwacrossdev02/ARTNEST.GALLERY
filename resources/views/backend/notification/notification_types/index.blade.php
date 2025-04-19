@@ -20,7 +20,7 @@
                 </div>
 
                 <form class="" id="sort_notification_types" action="" method="GET">
-                    <input type="hidden" name="notification_user_type" value="{{ $notificationUserType }}">
+                    <input type="hidden" name="notification_action_type" value="{{ $notificationUserType }}">
                     <div class="d-sm-flex justify-content-between mx-4">
                         <div class="mt-3">
                             @php
@@ -226,7 +226,7 @@
 @section('script')
     <script type="text/javascript">
         function sort_notification_types(value) {
-            $('input[name="notification_user_type"]').val(value);
+            $('input[name="notification_action_type"]').val(value);
             $('#sort_notification_types').submit();
         }
 

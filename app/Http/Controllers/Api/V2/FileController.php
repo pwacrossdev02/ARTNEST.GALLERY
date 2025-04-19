@@ -10,7 +10,7 @@ use Storage;
 class FileController extends Controller
 {
     public function index(){
-        $all_uploads = (auth()->user()->user_type == 'seller') ? Upload::where('user_id',auth()->user()->id) : Upload::query();
+        $all_uploads = (auth()->user()->action_type == 'seller') ? Upload::where('user_id',auth()->user()->id) : Upload::query();
         
 
         $all_uploads = $all_uploads->paginate(20)->appends(request()->query());

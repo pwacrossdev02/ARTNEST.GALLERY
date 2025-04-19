@@ -163,26 +163,26 @@ class AuthController extends Controller
             ]);
         }
 
-        $delivery_boy_condition = $request->has('user_type') && $request->user_type == 'delivery_boy';
-        $seller_condition = $request->has('user_type') && $request->user_type == 'seller';
+        $delivery_boy_condition = $request->has('action_type') && $request->action_type == 'delivery_boy';
+        $seller_condition = $request->has('action_type') && $request->action_type == 'seller';
         $req_email = $request->email;
 
         if ($delivery_boy_condition) {
-            $user = User::whereIn('user_type', ['delivery_boy'])
+            $user = User::whereIn('action_type', ['delivery_boy'])
                 ->where(function ($query) use ($req_email) {
                     $query->where('email', $req_email)
                         ->orWhere('phone', $req_email);
                 })
                 ->first();
         } elseif ($seller_condition) {
-            $user = User::whereIn('user_type', ['seller'])
+            $user = User::whereIn('action_type', ['seller'])
                 ->where(function ($query) use ($req_email) {
                     $query->where('email', $req_email)
                         ->orWhere('phone', $req_email);
                 })
                 ->first();
         } else {
-            $user = User::whereIn('user_type', ['customer'])
+            $user = User::whereIn('action_type', ['customer'])
                 ->where(function ($query) use ($req_email) {
                     $query->where('email', $req_email)
                         ->orWhere('phone', $req_email);
@@ -294,7 +294,7 @@ class AuthController extends Controller
                 [['email', '!=', null], 'email' => $social_user_details->email]
             );
 
-            // $existing_or_new_user->user_type = 'customer';
+            // $existing_or_new_user->action_type = 'customer';
             $existing_or_new_user->provider_id = $social_user_details->id;
 
             if (!$existing_or_new_user->exists) {
@@ -405,7 +405,7 @@ class AuthController extends Controller
             'expires_at' => null,
             'user' => [
                 'id' => $user->id,
-                'type' => $user->user_type,
+                'type' => $user->action_type,
                 'name' => $user->name,
                 'email' => $user->email,
                 'avatar' => $user->avatar,

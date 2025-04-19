@@ -17,7 +17,7 @@
         <div class="media text-inherit">
             <div class="media-body">
                 @php
-                    $user_type = auth()->user()->user_type;
+                    $action_type = auth()->user()->action_type;
                     $notificationType = get_notification_type($notification->notification_type_id, 'id');
                     $notifyContent = $notificationType->getTranslation('default_text');
                 @endphp
@@ -68,7 +68,7 @@
                                 $notifyContent = str_replace('[[amount]]', $amount, $notifyContent);
                             @endphp
                         @endif
-                        <a href="{{ ($user_type == 'admin' || $user_type == 'staff') ?
+                        <a href="{{ ($action_type == 'admin' || $action_type == 'staff') ?
                                     route('admin.notification.read-and-redirect', encrypt($notification->id)) :
                                     route('seller.notification.read-and-redirect', encrypt($notification->id)) }}">
                             <p class="mb-1 text-dark text-truncate-2">

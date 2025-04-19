@@ -16,7 +16,7 @@ class IsCustomer
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && (Auth::user()->user_type == 'customer')) {
+        if (Auth::check() && (Auth::user()->action_type == 'customer')) {
             return $next($request);
         }
         else{

@@ -27,8 +27,8 @@ class NotificationTypeController extends Controller
     {
         // Notification Types
         $notification_type_sort_search = (isset($request->notification_type_sort_search) && $request->notification_type_sort_search) ? $request->notification_type_sort_search : null;
-        $notificationUserType = $request->notification_user_type == null ? 'customer' :  $request->notification_user_type;
-        $notificationTypes = NotificationType::where('user_type', $notificationUserType);
+        $notificationUserType = $request->notification_action_type == null ? 'customer' :  $request->notification_action_type;
+        $notificationTypes = NotificationType::where('action_type', $notificationUserType);
         if ($notification_type_sort_search != null){
             $notificationTypes = $notificationTypes->where('name', 'like', '%' . $notification_type_sort_search . '%')
                 ->orWhereHas('notificationTypeTranslations', function ($q) use ($notification_type_sort_search) {

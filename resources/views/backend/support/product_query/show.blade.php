@@ -33,7 +33,7 @@
                         </p> --}}
                     </li>
                 </ul>
-                @if ((Auth::user()->id == $query->seller_id || Auth::user()->user_type == 'staff') && auth()->user()->can('reply_to_product_queries'))
+                @if ((Auth::user()->id == $query->seller_id || Auth::user()->action_type == 'staff') && auth()->user()->can('reply_to_product_queries'))
                     <form action="{{ route('product_query.reply', $query->id) }}" method="POST">
                         @method('put')
                         @csrf

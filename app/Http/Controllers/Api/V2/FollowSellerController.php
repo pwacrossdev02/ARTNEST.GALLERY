@@ -32,7 +32,7 @@ class FollowSellerController extends Controller
      */
     public function store($shop_id)
     {
-        if (auth()->user()->user_type == 'customer') {
+        if (auth()->user()->action_type == 'customer') {
             $followed_seller = FollowSeller::where('user_id', auth()->user()->id)->where('shop_id', $shop_id)->first();
             if ($followed_seller == null) {
                 FollowSeller::insert([

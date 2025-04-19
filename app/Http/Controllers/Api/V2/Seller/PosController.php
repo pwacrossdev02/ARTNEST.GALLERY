@@ -28,7 +28,7 @@ class PosController extends Controller
 
     public function getCustomers()
     {
-        $customers = User::where('user_type', 'customer')->where('email_verified_at', '!=', null)->orderBy('created_at', 'desc')->get();
+        $customers = User::where('action_type', 'customer')->where('email_verified_at', '!=', null)->orderBy('created_at', 'desc')->get();
         return new CustomerCollection($customers);
     }
 

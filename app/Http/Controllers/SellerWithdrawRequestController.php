@@ -114,9 +114,9 @@ class SellerWithdrawRequestController extends Controller
     public function message_modal(Request $request)
     {
         $seller_withdraw_request = SellerWithdrawRequest::findOrFail($request->id);
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->action_type == 'seller') {
             return view('frontend.partials.withdraw_message_modal', compact('seller_withdraw_request'));
-        } elseif (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff') {
+        } elseif (Auth::user()->action_type == 'admin' || Auth::user()->action_type == 'staff') {
             return view('backend.sellers.seller_withdraw_requests.withdraw_message_modal', compact('seller_withdraw_request'));
         }
     }

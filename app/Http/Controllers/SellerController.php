@@ -47,11 +47,11 @@ class SellerController extends Controller
         $shops = Shop::whereIn('user_id', function ($query) {
                     $query->select('id')
                     ->from(with(new User)->getTable())
-                    ->where('user_type', 'seller');
+                    ->where('action_type', 'seller');
                 })->latest();
 
         if ($sort_search != null || $verification_status != null) {
-            $user_ids = User::where('user_type', 'seller');
+            $user_ids = User::where('action_type', 'seller');
             if($sort_search != null){
                 $user_ids = $user_ids->where(function ($user) use ($sort_search) {
                     $user->where('name', 'like', '%' . $sort_search . '%')->orWhere('email', 'like', '%' . $sort_search . '%');
@@ -116,11 +116,11 @@ class SellerController extends Controller
         $user           = new User;
         $user->name     = $request->name;
         $user->email    = $request->email;
-        $user->user_type= "seller";
+        $user->action_type= "seller";
         $user->password = Hash::make($password);
 
         if ($user->save()) {
-            $array['user_type'] = 'seller';
+            $array['action_type'] = 'seller';
             $array['password']  = $password;
             $array['subject']   = translate('Account Opening Email');
             $array['from']      = env('MAIL_FROM_ADDRESS');

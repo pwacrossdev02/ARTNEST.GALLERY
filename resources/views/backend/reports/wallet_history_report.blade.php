@@ -16,7 +16,7 @@
                     <div class="col text-center text-md-left">
                         <h5 class="mb-md-0 h6">{{ translate('Wallet Transaction') }}</h5>
                     </div>
-                    @if(Auth::user()->user_type != 'seller')
+                    @if(Auth::user()->action_type != 'seller')
                     <div class="col-md-3 ml-auto">
                         <select id="demo-ease" class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="user_id">
                             <option value="">{{ translate('Choose User') }}</option>

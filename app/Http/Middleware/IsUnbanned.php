@@ -12,7 +12,7 @@ class IsUnbanned
         if (auth()->check() && auth()->user()->banned) {
 
             $redirect_to = "";
-            if(auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff'){
+            if(auth()->user()->action_type == 'admin' || auth()->user()->action_type == 'staff'){
                 $redirect_to = "login";
             }else{
                 $redirect_to = "user.login";

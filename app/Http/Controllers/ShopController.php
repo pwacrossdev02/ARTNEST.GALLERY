@@ -39,11 +39,11 @@ class ShopController extends Controller
     public function create()
     {
         if (Auth::check()) {
-            if ((Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'customer')) {
+            if ((Auth::user()->action_type == 'admin' || Auth::user()->action_type == 'customer')) {
                 flash(translate('Admin or Customer cannot be a seller'))->error();
                 return back();
             }
-            if (Auth::user()->user_type == 'seller') {
+            if (Auth::user()->action_type == 'seller') {
                 flash(translate('This user already a seller'))->error();
                 return back();
             }
@@ -64,6 +64,7 @@ class ShopController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->user_type = "seller";
+        $user->action_type = "seller";
         $user->password = Hash::make($request->password);
 
         if ($user->save()) {

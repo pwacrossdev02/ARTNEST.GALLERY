@@ -61,7 +61,7 @@ class PayoutNotification extends Notification
             'notification_type_id' => $this->data['notification_type_id'],
             'data' => [
                 'user_id'        => $this->data['user']['id'],
-                'user_type'      => $this->data['user']['user_type'],
+                'action_type'      => $this->data['user']['action_type'],
                 'name'           => $this->data['user']['name'],
                 'payment_amount' => $this->data['amount'], 
                 'status'         => $this->data['status']

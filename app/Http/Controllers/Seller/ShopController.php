@@ -115,7 +115,7 @@ class ShopController extends Controller
         $shop = Auth::user()->shop;
         $shop->verification_info = json_encode($data);
         if ($shop->save()) {
-            $users = User::findMany([User::where('user_type', 'admin')->first()->id]);
+            $users = User::findMany([User::where('action_type', 'admin')->first()->id]);
             $data = array();
             $data['shop'] = $shop;
             $data['status'] = 'submitted';

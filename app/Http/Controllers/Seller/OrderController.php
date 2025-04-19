@@ -61,7 +61,7 @@ class OrderController extends Controller
         $order = Order::findOrFail(decrypt($id));
         $order_shipping_address = json_decode($order->shipping_address);
         $delivery_boys = User::where('city', $order_shipping_address->city)
-            ->where('user_type', 'delivery_boy')
+            ->where('action_type', 'delivery_boy')
             ->get();
 
         $order->viewed = 1;
@@ -126,7 +126,7 @@ class OrderController extends Controller
 
 
         if (addon_is_activated('delivery_boy')) {
-            if ($authUser->user_type == 'delivery_boy') {
+            if ($authUser->action_type == 'delivery_boy') {
                 $deliveryBoyController = new DeliveryBoyController;
                 $deliveryBoyController->store_delivery_history($order);
             }

@@ -17,7 +17,7 @@ class DigitalProductController extends Controller
         $product = Product::findOrFail($request->id);
         $orders = Order::select("id")->where('user_id', auth()->user()->id)->pluck('id');
         $orderDetails = OrderDetail::where("product_id", $request->id)->whereIn("order_id", $orders)->get();
-        if (auth()->user()->user_type == 'admin' || auth()->user()->id == $product->user_id || $orderDetails) {
+        if (auth()->user()->action_type == 'admin' || auth()->user()->id == $product->user_id || $orderDetails) {
             $upload = Upload::findOrFail($product->file_name);
             if (env('FILESYSTEM_DRIVER') == "s3") {
                 return \Storage::disk('s3')->download($upload->file_name, $upload->file_original_name . "." . $upload->extension);

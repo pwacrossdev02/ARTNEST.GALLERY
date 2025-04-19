@@ -1,5 +1,5 @@
 <!-- Last Viewed Products  -->
-@if(get_setting('last_viewed_product_activation') == 1 && Auth::check() && auth()->user()->user_type == 'customer')
+@if(get_setting('last_viewed_product_activation') == 1 && Auth::check() && auth()->user()->action_type == 'customer')
 <div class="border-top" id="section_last_viewed_products" style="background-color: #fcfcfc;">
     @php
     $lastViewedProducts = getLastViewedProducts();
@@ -593,7 +593,7 @@
             </a>
         </div>
 
-        @if (Auth::check() && auth()->user()->user_type == 'customer')
+        @if (Auth::check() && auth()->user()->action_type == 'customer')
             <!-- Cart -->
             @php
                 $count = count(get_user_cart());
@@ -693,7 +693,7 @@
     </div>
 </div>
 
-@if (Auth::check() && auth()->user()->user_type == 'customer')
+@if (Auth::check() && auth()->user()->action_type == 'customer')
     <!-- User Side nav -->
     <div class="aiz-mobile-side-nav collapse-sidebar-wrap sidebar-xl d-xl-none z-1035">
         <div class="overlay dark c-pointer overlay-fixed" data-toggle="class-toggle" data-backdrop="static" data-target=".aiz-mobile-side-nav" data-same=".mobile-side-nav-thumb"></div>

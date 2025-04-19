@@ -115,7 +115,7 @@ class LoginController extends Controller
         if (session('link') != null) {
             return redirect(session('link'));
         } else {
-            if (auth()->user()->user_type == 'seller') {
+            if (auth()->user()->action_type == 'seller') {
                 return redirect()->route('seller.dashboard');
             }
             return redirect()->route('dashboard');
@@ -195,7 +195,7 @@ class LoginController extends Controller
         if (session('link') != null) {
             return redirect(session('link'));
         } else {
-            if (auth()->user()->user_type == 'seller') {
+            if (auth()->user()->action_type == 'seller') {
                 return redirect()->route('seller.dashboard');
             }
             return redirect()->route('dashboard');
@@ -255,7 +255,7 @@ class LoginController extends Controller
     public function authenticated()
     {
         if (session('temp_user_id') != null) {
-            if(auth()->user()->user_type == 'customer'){
+            if(auth()->user()->action_type == 'customer'){
                 Cart::where('temp_user_id', session('temp_user_id'))
                 ->update(
                     [
@@ -270,10 +270,10 @@ class LoginController extends Controller
             Session::forget('temp_user_id');
         }
 
-        if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
+        if (auth()->user()->action_type == 'admin' || auth()->user()->action_type == 'staff') {
             
             return redirect()->route('admin.dashboard');
-        } elseif (auth()->user()->user_type == 'seller') {
+        } elseif (auth()->user()->action_type == 'seller') {
             return redirect()->route('seller.dashboard');
         } else {
 
@@ -302,12 +302,12 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request2..
      * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
     {
-        if (auth()->user() != null && (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')) {
+        if (auth()->user() != null && (auth()->user()->action_type == 'admin' || auth()->user()->action_type == 'staff')) {
             $redirect_route = 'login';
         } else {
             $redirect_route = 'home';

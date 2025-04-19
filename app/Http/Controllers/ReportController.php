@@ -52,7 +52,7 @@ class ReportController extends Controller
     public function seller_sale_report(Request $request)
     {
         $sort_by = null;
-        // $sellers = User::where('user_type', 'seller')->orderBy('created_at', 'desc');
+        // $sellers = User::where('action_type', 'seller')->orderBy('created_at', 'desc');
         $sellers = Shop::with('user')->orderBy('created_at', 'desc');
         if ($request->has('verification_status')) {
             $sort_by = $request->verification_status;
@@ -85,7 +85,7 @@ class ReportController extends Controller
         $seller_id = null;
         $date_range = null;
 
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->action_type == 'seller') {
             $seller_id = Auth::user()->id;
         }
         if ($request->seller_id) {
@@ -106,7 +106,7 @@ class ReportController extends Controller
         }
 
         $commission_history = $commission_history->paginate(10);
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->action_type == 'seller') {
             return view('seller.reports.commission_history_report', compact('commission_history', 'seller_id', 'date_range'));
         }
         return view('backend.reports.commission_history_report', compact('commission_history', 'seller_id', 'date_range'));

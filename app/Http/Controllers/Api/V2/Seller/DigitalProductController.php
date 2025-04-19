@@ -45,7 +45,7 @@ class DigitalProductController extends Controller
             }
         }
 
-        if (auth()->user()->user_type != 'seller') {
+        if (auth()->user()->action_type != 'seller') {
             return $this->failed(translate('Unauthenticated User.'));
         }
 
@@ -149,7 +149,7 @@ class DigitalProductController extends Controller
     // Digital Product File Download
     public function download($id)
     {
-        if (auth()->user()->user_type != 'seller') {
+        if (auth()->user()->action_type != 'seller') {
             return $this->failed(translate('Unauthenticated User.'));
         }
 

@@ -14,7 +14,7 @@ class AizUploadController extends Controller
     public function index(Request $request)
     {
 
-        $all_uploads = (auth()->user()->user_type == 'seller') ? Upload::where('user_id', auth()->user()->id) : Upload::query();
+        $all_uploads = (auth()->user()->action_type == 'seller') ? Upload::where('user_id', auth()->user()->id) : Upload::query();
         $search = null;
         $sort_by = null;
 
@@ -45,7 +45,7 @@ class AizUploadController extends Controller
         $all_uploads = $all_uploads->paginate(60)->appends(request()->query());
 
 
-        return (auth()->user()->user_type == 'seller')
+        return (auth()->user()->action_type == 'seller')
             ? view('seller.uploads.index', compact('all_uploads', 'search', 'sort_by'))
             : view('backend.uploaded_files.index', compact('all_uploads', 'search', 'sort_by'));
     }
@@ -199,7 +199,7 @@ class AizUploadController extends Controller
     {
         $upload = Upload::findOrFail($id);
 
-        if (auth()->user()->user_type == 'seller' && $upload->user_id != auth()->user()->id) {
+        if (auth()->user()->action_type == 'seller' && $upload->user_id != auth()->user()->id) {
             flash(translate("You don't have permission for deleting this!"))->error();
             return back();
         }
@@ -293,7 +293,7 @@ class AizUploadController extends Controller
     {
         $file = Upload::findOrFail($request['id']);
 
-        return (auth()->user()->user_type == 'seller')
+        return (auth()->user()->action_type == 'seller')
             ? view('seller.uploads.info', compact('file'))
             : view('backend.uploaded_files.info', compact('file'));
     }

@@ -19,7 +19,7 @@ class CouponCollection extends ResourceCollection
 
                 $coupon_products_details = [];
                 $order_discount_details = null;
-                $user_type = $data->user->user_type;
+                $action_type = $data->user->action_type;
                 $shop = $data->user->shop;
 
                 if ($data->type == 'product_base') {
@@ -38,12 +38,12 @@ class CouponCollection extends ResourceCollection
                     $order_discount_details = $arr;
                 }
 
-                $shop_name = $user_type == 'admin' ? get_setting('website_name') : ( $shop->name ?? '');
+                $shop_name = $action_type == 'admin' ? get_setting('website_name') : ( $shop->name ?? '');
 
-                if ($user_type == 'admin' || ($shop != null && $shop->verification_status)) {
+                if ($action_type == 'admin' || ($shop != null && $shop->verification_status)) {
                     return [
                         'id' => (int)$data->id,
-                        'user_type' => $user_type,
+                        'action_type' => $action_type,
                         'shop_id' => $shop->id ?? '',
                         'shop_name' => translate($shop_name),
                         'shop_slug' => $shop->slug ?? '',

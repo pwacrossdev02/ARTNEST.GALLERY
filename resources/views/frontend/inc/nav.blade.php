@@ -211,7 +211,7 @@
                         </div>
                     </div>
 
-                    @if (Auth::check() && auth()->user()->user_type == 'customer')
+                    @if (Auth::check() && auth()->user()->action_type == 'customer')
                         <!-- Compare -->
                         <div class="d-none d-lg-block ml-3 mr-0">
                             <div class="" id="compare">
@@ -320,7 +320,7 @@
                         </ul>
                     @endif
                     
-                    <!-- @if (Auth::check() && auth()->user()->user_type == 'seller')
+                    <!-- @if (Auth::check() && auth()->user()->action_type == 'seller')
                         
                         @if(!request()->has('as_customer'))
                             <div class="text-center my-4">
@@ -336,7 +336,7 @@
                             </div>
                         @endif
                     @endif -->
-                    <!-- @if (Auth::check() && auth()->user()->user_type == 'seller')
+                    <!-- @if (Auth::check() && auth()->user()->action_type == 'seller')
                         @if(session('acting_as_customer'))
                             <a href="{{ route('seller.dashboard') }}" class="btn btn-outline-primary">
                                 Back to Seller Dashboard
@@ -348,7 +348,7 @@
                         @endif
                     @endif -->
                     @if (Auth::check() && auth()->user()->user_type == 'seller')
-                        @if(session('acting_role') == 'customer')
+                        @if(auth()->user()->action_type == 'customer')
                             <a href="{{ route('switch.role', 'seller') }}" class="btn btn-outline-primary btn-sm">
                                 Switch to Seller Role
                             </a>

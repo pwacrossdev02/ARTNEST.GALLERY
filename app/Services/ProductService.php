@@ -20,13 +20,13 @@ class ProductService
         $collection = collect($data);
 
         $approved = 1;
-        if (auth()->user()->user_type == 'seller') {
+        if (auth()->user()->action_type == 'seller') {
             $user_id = auth()->user()->id;
             if (get_setting('product_approve_by_admin') == 1) {
                 $approved = 0;
             }
         } else {
-            $user_id = User::where('user_type', 'admin')->first()->id;
+            $user_id = User::where('action_type', 'admin')->first()->id;
         }
         $tags = array();
         if ($collection['tags'][0] != null) {
@@ -332,7 +332,7 @@ class ProductService
             $products = $category->products();
         }
         
-        $products = in_array($auth_user->user_type, ['admin', 'staff']) ? $products->where('products.added_by', 'admin') : $products->where('products.user_id', $auth_user->id);
+        $products = in_array($auth_user->action_type, ['admin', 'staff']) ? $products->where('products.added_by', 'admin') : $products->where('products.user_id', $auth_user->id);
         $products->where('published', '1')->where('auction_product', 0)->where('approved', '1');
 
         if($productType == 'physical'){
@@ -367,13 +367,13 @@ class ProductService
             $discount_end_date   = strtotime($date_var[1]);
         }
         $seller_product_discount =  isset($data['seller_product_discount']) ? $data['seller_product_discount'] : null ;
-        $admin_id = User::where('user_type', 'admin')->first()->id;
+        $admin_id = User::where('action_type', 'admin')->first()->id;
 
         $products = Product::where('category_id', $data['category_id'])->where('auction_product', 0);
-        if(in_array($auth_user->user_type, ['admin', 'staff']) && $seller_product_discount == 0){
+        if(in_array($auth_user->action_type, ['admin', 'staff']) && $seller_product_discount == 0){
             $products = $products->where('user_id', $admin_id);
         }
-        elseif($auth_user->user_type == 'seller'){
+        elseif($auth_user->action_type == 'seller'){
             $products = $products->where('user_id', $auth_user->id);
         }
 

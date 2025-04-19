@@ -219,7 +219,7 @@
         // coupon apply
         $(document).on("click", "#coupon-apply", function() {
             @if (Auth::check())
-                @if(Auth::user()->user_type != 'customer')
+                @if(Auth::user()->action_type != 'customer')
                     AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to apply coupon code.') }}");
                     return false;
                 @endif
@@ -247,7 +247,7 @@
 
         // coupon remove
         $(document).on("click", "#coupon-remove", function() {
-            @if (Auth::check() && Auth::user()->user_type == 'customer')
+            @if (Auth::check() && Auth::user()->action_type == 'customer')
                 var data = new FormData($('#remove-coupon-form')[0]);
                 $.ajax({
                     headers: {

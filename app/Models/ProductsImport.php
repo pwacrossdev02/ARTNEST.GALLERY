@@ -27,7 +27,7 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
     {
         $canImport = true;
         $user = Auth::user();
-        if ($user->user_type == 'seller' && addon_is_activated('seller_subscription')) {
+        if ($user->action_type == 'seller' && addon_is_activated('seller_subscription')) {
             if ((count($rows) + $user->products()->count()) > $user->shop->product_upload_limit
                 || $user->shop->package_invalid_at == null
                 || Carbon::now()->diffInDays(Carbon::parse($user->shop->package_invalid_at), false) < 0
@@ -40,15 +40,15 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
         if ($canImport) {
             foreach ($rows as $row) {
                 $approved = 1;
-                if ($user->user_type == 'seller' && get_setting('product_approve_by_admin') == 1) {
+                if ($user->action_type == 'seller' && get_setting('product_approve_by_admin') == 1) {
                     $approved = 0;
                 }
 
                 $productId = Product::create([
                     'name' => $row['name'],
                     'description' => $row['description'],
-                    'added_by' => $user->user_type == 'seller' ? 'seller' : 'admin',
-                    'user_id' => $user->user_type == 'seller' ? $user->id : User::where('user_type', 'admin')->first()->id,
+                    'added_by' => $user->action_type == 'seller' ? 'seller' : 'admin',
+                    'user_id' => $user->action_type == 'seller' ? $user->id : User::where('action_type', 'admin')->first()->id,
                     'approved' => $approved,
                     'category_id' => $row['category_id'],
                     'brand_id' => $row['brand_id'],

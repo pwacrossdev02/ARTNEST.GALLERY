@@ -30,7 +30,7 @@
                     </li>
                 @endforeach
             </ul>
-            @if ($conversation->receiver != null && $conversation->receiver->user_type == 'admin' && auth()->user()->can('reply_to_product_conversations'))
+            @if ($conversation->receiver != null && $conversation->receiver->action_type == 'admin' && auth()->user()->can('reply_to_product_conversations'))
                 <form action="{{ route('messages.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">

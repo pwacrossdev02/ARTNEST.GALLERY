@@ -168,7 +168,7 @@ if (!function_exists('verified_sellers_id')) {
 //     function unbanned_sellers_id()
 //     {
 //         return Cache::rememberForever('unbanned_sellers_id', function () {
-//             return App\Models\User::where('user_type', 'seller')->where('banned', 0)->pluck('id')->toArray();
+//             return App\Models\User::where('action_type', 'seller')->where('banned', 0)->pluck('id')->toArray();
 //         });
 //     }
 // }
@@ -1278,7 +1278,7 @@ function hex2rgba($color, $opacity = false)
 if (!function_exists('isAdmin')) {
     function isAdmin()
     {
-        if (Auth::check() && (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff')) {
+        if (Auth::check() && (Auth::user()->action_type == 'admin' || Auth::user()->action_type == 'staff')) {
             return true;
         }
         return false;
@@ -1288,7 +1288,7 @@ if (!function_exists('isAdmin')) {
 if (!function_exists('isSeller')) {
     function isSeller()
     {
-        if (Auth::check() && Auth::user()->user_type == 'seller') {
+        if (Auth::check() && Auth::user()->action_type == 'seller') {
             return true;
         }
         return false;
@@ -1298,7 +1298,7 @@ if (!function_exists('isSeller')) {
 if (!function_exists('isCustomer')) {
     function isCustomer()
     {
-        if (Auth::check() && Auth::user()->user_type == 'customer') {
+        if (Auth::check() && Auth::user()->action_type == 'customer') {
             return true;
         }
         return false;
@@ -1561,7 +1561,7 @@ if (!function_exists('get_admin')) {
     function get_admin()
     {
         $admin_query = User::query();
-        return $admin_query->where('user_type', 'admin')->first();
+        return $admin_query->where('action_type', 'admin')->first();
     }
 }
 
@@ -2388,7 +2388,7 @@ if (!function_exists('get_pos_user_cart')) {
     {
         $cart               = [];
         $authUser           = auth()->user();
-        $owner_id           = in_array($authUser->user_type, ['admin','staff']) ? User::where('user_type', 'admin')->first()->id : $authUser->id;
+        $owner_id           = in_array($authUser->action_type, ['admin','staff']) ? User::where('action_type', 'admin')->first()->id : $authUser->id;
 
         if ($sessionUserID == null) {
             $sessionUserID = Session::has('pos.user_id') ? Session::get('pos.user_id') : null;

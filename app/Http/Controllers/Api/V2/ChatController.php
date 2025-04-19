@@ -72,8 +72,8 @@ class ChatController extends Controller
         }
 
         return response()->json(['result' => true, 'conversation_id' => $conversation->id,
-            'shop_name' => $conversation->receiver->user_type == 'admin' ? 'In House Product' : $conversation->receiver->shop->name,
-            'shop_logo' => $conversation->receiver->user_type == 'admin' ? uploaded_asset(get_setting('header_logo'))  : uploaded_asset($conversation->receiver->shop->logo),
+            'shop_name' => $conversation->receiver->action_type == 'admin' ? 'In House Product' : $conversation->receiver->shop->name,
+            'shop_logo' => $conversation->receiver->action_type == 'admin' ? uploaded_asset(get_setting('header_logo'))  : uploaded_asset($conversation->receiver->shop->logo),
             'title'=> $conversation->title,
             'message' => translate("Conversation created"),]);
     }

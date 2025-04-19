@@ -23,14 +23,14 @@ class ProductBulkUploadController extends Controller
 
     public function index()
     {
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->action_type == 'seller') {
             if (Auth::user()->shop->verification_status) {
                 return view('seller.product_bulk_upload.index');
             } else {
                 flash(translate('Your shop is not verified yet!'))->warning();
                 return back();
             }
-        } elseif (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff') {
+        } elseif (Auth::user()->action_type == 'admin' || Auth::user()->action_type == 'staff') {
             return view('backend.product.bulk_upload.index');
         }
     }
@@ -60,7 +60,7 @@ class ProductBulkUploadController extends Controller
 
     public function pdf_download_seller()
     {
-        $users = User::where('user_type', 'seller')->get();
+        $users = User::where('action_type', 'seller')->get();
 
         return PDF::loadView('backend.downloads.user', [
             'users' => $users,

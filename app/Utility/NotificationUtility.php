@@ -55,7 +55,7 @@ class NotificationUtility
 
     public static function sendNotification($order, $order_status)
     {     
-        $adminId = \App\Models\User::where('user_type', 'admin')->first()->id;
+        $adminId = \App\Models\User::where('action_type', 'admin')->first()->id;
         $userIds = array($order->user->id, $order->seller_id);
         if ($order->seller_id != $adminId) {
             array_push($userIds, $adminId);
@@ -70,7 +70,7 @@ class NotificationUtility
         $order_notification['status'] = $order_status;
 
         foreach($users as $user){
-            $notificationType = get_notification_type('order_'.$order_status.'_'.$user->user_type, 'type');
+            $notificationType = get_notification_type('order_'.$order_status.'_'.$user->action_type, 'type');
             if($notificationType != null && $notificationType->status == 1){
                 $order_notification['notification_type_id'] = $notificationType->id;
                 Notification::send($user, new OrderNotification($order_notification));

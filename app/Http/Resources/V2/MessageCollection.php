@@ -14,7 +14,7 @@ class MessageCollection extends ResourceCollection
                 return [
                     'id' => $data->id,
                     'user_id' => intval($data->user_id),
-                    'send_type' => $data->user->user_type,
+                    'send_type' => $data->user->action_type,
                     'message' => $data->message,
                     'year' => Carbon::createFromFormat('Y-m-d H:i:s',$data->created_at)->format('Y'),
                     'month' => Carbon::createFromFormat('Y-m-d H:i:s',$data->created_at)->format('m'),

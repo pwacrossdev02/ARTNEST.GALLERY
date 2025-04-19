@@ -3,11 +3,11 @@
         <div class="col text-center text-md-left">
             <h5 class="mb-md-0 h6">{{ translate('Commission History') }}</h5>
         </div>
-        @if(Auth::user()->user_type != 'seller')
+        @if(Auth::user()->action_type != 'seller')
         <div class="col-md-3 ml-auto">
             <select id="demo-ease" class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="seller_id">
                 <option value="">{{ translate('Choose Seller') }}</option>
-                @foreach (App\Models\User::where('user_type', '=', 'seller')->get() as $key => $seller)
+                @foreach (App\Models\User::where('action_type', '=', 'seller')->get() as $key => $seller)
                     <option value="{{ $seller->id }}" @if($seller->id == $seller_id) selected @endif >
                         {{ $seller->name }}
                     </option>

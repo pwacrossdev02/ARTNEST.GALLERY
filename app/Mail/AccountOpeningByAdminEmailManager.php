@@ -35,7 +35,7 @@ class AccountOpeningByAdminEmailManager extends Mailable
                     ->from($this->array['from'], env('MAIL_FROM_NAME'))
                     ->subject($this->array['subject'])
                     ->with([
-                        'user_type' => $this->array['user_type'],
+                        'action_type' => $this->array['action_type'],
                         'password' => $this->array['password']
                     ]);
     }

@@ -10,7 +10,7 @@
     </div>
     <form class="" action="{{route('customer_products.store')}}" method="POST" enctype="multipart/form-data" id="choice_form">
         @csrf
-        <input type="hidden" name="added_by" value="{{ Auth::user()->user_type }}">
+        <input type="hidden" name="added_by" value="{{ Auth::user()->action_type }}">
         <input type="hidden" name="status" value="available">
 
         <!-- General -->

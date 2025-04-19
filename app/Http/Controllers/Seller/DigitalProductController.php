@@ -101,7 +101,7 @@ class DigitalProductController  extends Controller
         ]));
 
         if (get_setting('product_approve_by_admin') == 1) {
-            $users = User::findMany(User::where('user_type', 'admin')->first()->id);
+            $users = User::findMany(User::where('action_type', 'admin')->first()->id);
             $data = array();
             $data['product_type']   = 'digital';
             $data['status']         = 'pending';

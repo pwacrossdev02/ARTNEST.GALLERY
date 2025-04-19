@@ -52,10 +52,10 @@ class CustomerProductController extends Controller
             ->with('childrenCategories')
             ->get();
 
-        if(Auth::user()->user_type == "customer" && Auth::user()->remaining_uploads > 0){
+        if(Auth::user()->action_type == "customer" && Auth::user()->remaining_uploads > 0){
             return view('frontend.user.customer.product_upload', compact('categories'));
         }
-        elseif (Auth::user()->user_type == "seller" && Auth::user()->remaining_uploads > 0) {
+        elseif (Auth::user()->action_type == "seller" && Auth::user()->remaining_uploads > 0) {
             return view('frontend.user.customer.product_upload', compact('categories'));
         }
         else{

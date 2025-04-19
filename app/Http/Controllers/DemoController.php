@@ -171,7 +171,7 @@ class DemoController extends Controller
             if ($banner->photo != null) {
                 $arr = explode('.', $banner->photo);
                 $upload = Upload::create([
-                    'file_original_name' => null, 'file_name' => $banner->photo, 'user_id' => User::where('user_type', 'admin')->first()->id, 'extension' => $arr[1],
+                    'file_original_name' => null, 'file_name' => $banner->photo, 'user_id' => User::where('action_type', 'admin')->first()->id, 'extension' => $arr[1],
                     'type' => isset($type[$arr[1]]) ?  $type[$arr[1]] : "others", 'file_size' => 0
                 ]);
 
@@ -184,7 +184,7 @@ class DemoController extends Controller
             if ($brand->logo != null) {
                 $arr = explode('.', $brand->logo);
                 $upload = Upload::create([
-                    'file_original_name' => null, 'file_name' => $brand->logo, 'user_id' => User::where('user_type', 'admin')->first()->id, 'extension' => $arr[1],
+                    'file_original_name' => null, 'file_name' => $brand->logo, 'user_id' => User::where('action_type', 'admin')->first()->id, 'extension' => $arr[1],
                     'type' => isset($type[$arr[1]]) ?  $type[$arr[1]] : "others", 'file_size' => 0
                 ]);
 
@@ -197,7 +197,7 @@ class DemoController extends Controller
             if ($category->banner != null) {
                 $arr = explode('.', $category->banner);
                 $upload = Upload::create([
-                    'file_original_name' => null, 'file_name' => $category->banner, 'user_id' => User::where('user_type', 'admin')->first()->id, 'extension' => $arr[1],
+                    'file_original_name' => null, 'file_name' => $category->banner, 'user_id' => User::where('action_type', 'admin')->first()->id, 'extension' => $arr[1],
                     'type' => isset($type[$arr[1]]) ?  $type[$arr[1]] : "others", 'file_size' => 0
                 ]);
 
@@ -207,7 +207,7 @@ class DemoController extends Controller
             if ($category->icon != null) {
                 $arr = explode('.', $category->icon);
                 $upload = Upload::create([
-                    'file_original_name' => null, 'file_name' => $category->icon, 'user_id' => User::where('user_type', 'admin')->first()->id, 'extension' => $arr[1],
+                    'file_original_name' => null, 'file_name' => $category->icon, 'user_id' => User::where('action_type', 'admin')->first()->id, 'extension' => $arr[1],
                     'type' => isset($type[$arr[1]]) ?  $type[$arr[1]] : "others", 'file_size' => 0
                 ]);
 
@@ -220,7 +220,7 @@ class DemoController extends Controller
             if ($package->logo != null) {
                 $arr = explode('.', $package->logo);
                 $upload = Upload::create([
-                    'file_original_name' => null, 'file_name' => $package->logo, 'user_id' => User::where('user_type', 'admin')->first()->id, 'extension' => $arr[1],
+                    'file_original_name' => null, 'file_name' => $package->logo, 'user_id' => User::where('action_type', 'admin')->first()->id, 'extension' => $arr[1],
                     'type' => isset($type[$arr[1]]) ?  $type[$arr[1]] : "others", 'file_size' => 0
                 ]);
 
@@ -270,7 +270,7 @@ class DemoController extends Controller
             if ($flash_deal->banner != null) {
                 $arr = explode('.', $flash_deal->banner);
                 $upload = Upload::create([
-                    'file_original_name' => null, 'file_name' => $flash_deal->banner, 'user_id' => User::where('user_type', 'admin')->first()->id, 'extension' => $arr[1],
+                    'file_original_name' => null, 'file_name' => $flash_deal->banner, 'user_id' => User::where('action_type', 'admin')->first()->id, 'extension' => $arr[1],
                     'type' => isset($type[$arr[1]]) ?  $type[$arr[1]] : "others", 'file_size' => 0
                 ]);
 
@@ -367,7 +367,7 @@ class DemoController extends Controller
             if ($slider->photo != null) {
                 $arr = explode('.', $slider->photo);
                 $upload = Upload::create([
-                    'file_original_name' => null, 'file_name' => $slider->photo, 'user_id' => User::where('user_type', 'admin')->first()->id, 'extension' => $arr[1],
+                    'file_original_name' => null, 'file_name' => $slider->photo, 'user_id' => User::where('action_type', 'admin')->first()->id, 'extension' => $arr[1],
                     'type' => isset($type[$arr[1]]) ?  $type[$arr[1]] : "others", 'file_size' => 0
                 ]);
 

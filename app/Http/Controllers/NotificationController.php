@@ -45,7 +45,7 @@ class NotificationController extends Controller
     public function customNotification(Request $request)
     {
         $customNotificationTypes = NotificationType::where('type','custom')->where('status',1)->get();
-        $customers = User::where('user_type', 'customer')->where('email_verified_at', '!=', null)->where('banned',0)->get();
+        $customers = User::where('action_type', 'customer')->where('email_verified_at', '!=', null)->where('banned',0)->get();
         return view('backend.notification.custom_notification', compact('customers', 'customNotificationTypes'));
     }
 
@@ -114,7 +114,7 @@ class NotificationController extends Controller
 
     // Notification marked as read redirect to the link
     public function readAndRedirect($id) {
-        $userType = auth()->user()->user_type;
+        $userType = auth()->user()->action_type;
         $notificationId = decrypt($id);
         $notification = auth()->user()->unreadNotifications->where('id',$notificationId)->first();
 

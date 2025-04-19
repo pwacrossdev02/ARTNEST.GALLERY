@@ -214,7 +214,7 @@
                         <span class="d-flex align-items-center">
                             <span class="d-none d-md-block">
                                 <span class="d-block fw-500">{{ Auth::user()->name }}</span>
-                                <span class="d-block small opacity-60 text-right">{{ Auth::user()->user_type }}</span>
+                                <span class="d-block small opacity-60 text-right">{{ Auth::user()->action_type }}</span>
                             </span>
                             <span class="size-40px rounded-content overflow-hidden ml-md-2">
                                 <img src="{{ uploaded_asset(Auth::user()->avatar_original) }}" class="img-fit"

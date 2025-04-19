@@ -184,7 +184,7 @@ class ShopController extends Controller
         return response()->json([
             'result' => true,
             'id' => $user->id,
-            'type' => $user->user_type,
+            'type' => $user->action_type,
             'name' => $user->name,
             'email' => $user->email,
             'avatar' => $user->avatar,
@@ -211,7 +211,7 @@ class ShopController extends Controller
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->user_type = "seller";
+        $user->action_type = "seller";
         $user->password = Hash::make($request->password);
         $user->verification_code = rand(100000, 999999);
 

@@ -48,7 +48,7 @@ class OrderController extends Controller
         $order_type = '';
 
         $orders = Order::orderBy('id', 'desc');
-        $admin_user_id = User::where('user_type', 'admin')->first()->id;
+        $admin_user_id = User::where('action_type', 'admin')->first()->id;
 
         if (Route::currentRouteName() == 'inhouse_orders.index' && Auth::user()->can('view_inhouse_orders')) {
             $orders = $orders->where('orders.seller_id', '=', $admin_user_id);
@@ -62,7 +62,7 @@ class OrderController extends Controller
             }
             $orders->where('shipping_type', 'pickup_point')->orderBy('code', 'desc');
             if (
-                Auth::user()->user_type == 'staff' &&
+                Auth::user()->action_type == 'staff' &&
                 Auth::user()->staff->pick_up_point != null
             ) {
                 $orders->where('shipping_type', 'pickup_point')
@@ -117,7 +117,7 @@ class OrderController extends Controller
         
         $order_shipping_address = json_decode($order->shipping_address);
         $delivery_boys = User::where('city', $order_shipping_address->city)
-                ->where('user_type', 'delivery_boy')
+                ->where('action_type', 'delivery_boy')
                 ->get();
                 
         if(env('DEMO_MODE') != 'On') {
@@ -387,14 +387,14 @@ class OrderController extends Controller
         }
 
         // If the order is cancelled and the seller commission is calculated, deduct seller earning
-        if($request->status == 'cancelled' && $order->user->user_type == 'seller' && $order->payment_status == 'paid' && $order->commission_calculated == 1){
+        if($request->status == 'cancelled' && $order->user->action_type == 'seller' && $order->payment_status == 'paid' && $order->commission_calculated == 1){
             $sellerEarning = $order->commissionHistory->seller_earning;
             $shop = $order->shop;
             $shop->admin_to_pay -= $sellerEarning;
             $shop->save();
         }
 
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->action_type == 'seller') {
             foreach ($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail) {
                 $orderDetail->delivery_status = $request->status;
                 $orderDetail->save();
@@ -460,7 +460,7 @@ class OrderController extends Controller
 
 
         if (addon_is_activated('delivery_boy')) {
-            if (Auth::user()->user_type == 'delivery_boy') {
+            if (Auth::user()->action_type == 'delivery_boy') {
                 $deliveryBoyController = new DeliveryBoyController;
                 $deliveryBoyController->store_delivery_history($order);
             }
@@ -484,7 +484,7 @@ class OrderController extends Controller
         $order->payment_status_viewed = '0';
         $order->save();
 
-        if (Auth::user()->user_type == 'seller') {
+        if (Auth::user()->action_type == 'seller') {
             foreach ($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail) {
                 $orderDetail->payment_status = $request->status;
                 $orderDetail->save();

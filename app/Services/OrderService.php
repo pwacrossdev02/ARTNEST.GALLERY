@@ -35,7 +35,7 @@ class OrderService{
                 product_restock($orderDetail);
             }
 
-            if (addon_is_activated('affiliate_system') && auth()->user()->user_type == 'admin') {
+            if (addon_is_activated('affiliate_system') && auth()->user()->action_type == 'admin') {
                 if (($request->status == 'delivered' || $request->status == 'cancelled') &&
                     $orderDetail->product_referral_code
                 ) {
@@ -82,7 +82,7 @@ class OrderService{
 
 
         if (addon_is_activated('delivery_boy')) {
-            if (auth()->user()->user_type == 'delivery_boy') {
+            if (auth()->user()->action_type == 'delivery_boy') {
                 $deliveryBoyController = new DeliveryBoyController;
                 $deliveryBoyController->store_delivery_history($order);
             }
@@ -95,7 +95,7 @@ class OrderService{
         $order->payment_status_viewed = '0';
         $order->save();
 
-        if (auth()->user()->user_type == 'seller') {
+        if (auth()->user()->action_type == 'seller') {
             foreach ($order->orderDetails->where('seller_id', auth()->user()->id) as $key => $orderDetail) {
                 $orderDetail->payment_status = $request->status;
                 $orderDetail->save();

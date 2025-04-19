@@ -40,7 +40,7 @@ class SellerWithdrawRequestController extends Controller
         if ($seller_withdraw_request->save()) {
 
             // Seller payout request notification to admin
-            $users = User::findMany(User::where('user_type', 'admin')->first()->id);
+            $users = User::findMany(User::where('action_type', 'admin')->first()->id);
             $data = array();
             $data['user'] = auth()->user();
             $data['amount'] = $request->amount;

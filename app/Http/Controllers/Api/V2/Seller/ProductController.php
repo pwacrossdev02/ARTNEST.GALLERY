@@ -104,7 +104,7 @@ class ProductController extends Controller
             }
         }
 
-        if (auth()->user()->user_type != 'seller') {
+        if (auth()->user()->action_type != 'seller') {
             return $this->failed(translate('Unauthenticated User.'));
         }
 
@@ -147,7 +147,7 @@ class ProductController extends Controller
     public function edit(Request $request, $id)
     {
 
-        if (auth()->user()->user_type != 'seller') {
+        if (auth()->user()->action_type != 'seller') {
             return $this->failed(translate('Unauthenticated User.'));
         }
 

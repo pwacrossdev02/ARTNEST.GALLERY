@@ -87,7 +87,7 @@
 			<tbody class="strong">
                 @foreach ($users as $key => $user)
 	                <tr class="">
-						<td>{{ $user->user_type }}</td>
+						<td>{{ $user->action_type }}</td>
 						<td>{{ $user->name }}</td>
 						<td>{{ $user->id }}</td>
 						<td>{{ $user->email }}</td>
